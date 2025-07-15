@@ -38,3 +38,10 @@ coverage/
 # Task files
 # tasks.json
 # tasks/ 
+
+.cursor
+.gemini
+.taskmaster
+CLAUDE.md
+GEMINI.md
+.env.example
