@@ -1,0 +1,214 @@
+{
+  "master": {
+    "tasks": [
+      {
+        "id": 1,
+        "title": "Project Setup and Scaffolding",
+        "description": "Initialize the npm project, create the directory structure, and configure `package.json`, `tsconfig.json`, and `.gitignore` as per the PRD.",
+        "details": "Set up the project with `npm init`. Create `src/`, `src/tools/`, `src/utils/`, and `dist/` directories. Populate `package.json` with dependencies (`@modelcontextprotocol/sdk`, `zod`), scripts (`build`, `dev`, `test`), and metadata. Configure `tsconfig.json` for ES2022 target and Node16 module resolution.",
+        "testStrategy": "Verify that `npm install` and `npm run build` execute without errors. Check that the `dist` directory is created with the correct structure.",
+        "priority": "high",
+        "dependencies": [],
+        "status": "done",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Initialize npm project and create directory structure",
+            "description": "Run npm init to create package.json, create src/, src/tools/, src/utils/ directories, and set up basic project structure",
+            "details": "",
+            "status": "done",
+            "dependencies": [],
+            "parentTaskId": 1
+          },
+          {
+            "id": 2,
+            "title": "Configure TypeScript and build system",
+            "description": "Create tsconfig.json, configure package.json scripts for build/dev/test, and set up .gitignore file",
+            "details": "",
+            "status": "done",
+            "dependencies": [],
+            "parentTaskId": 1
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "title": "Implement Core Text Analysis Logic",
+        "description": "Create the core text analysis functions in `src/utils/text-analyzer.ts` for counting words, letters, characters, sentences, and paragraphs.",
+        "details": "Implement five functions: `count_words` (split by whitespace), `count_letters` (regex `/[a-zA-Z]/g`), `count_characters` (`string.length`), `count_sentences` (split by terminators, handling abbreviations), and `count_paragraphs` (split by `\\n\\n+`). Ensure functions handle edge cases like empty or null inputs gracefully.",
+        "testStrategy": "Write comprehensive unit tests for each function covering standard inputs, edge cases (empty strings, unicode, special characters), and performance for large texts (up to 10k words).",
+        "priority": "high",
+        "dependencies": [
+          1
+        ],
+        "status": "done",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Implement count_words function",
+            "description": "Create count_words function that splits text by whitespace and counts words, with unit tests",
+            "details": "",
+            "status": "done",
+            "dependencies": [],
+            "parentTaskId": 2
+          },
+          {
+            "id": 2,
+            "title": "Implement count_letters function",
+            "description": "Create count_letters function that counts alphabetic characters (a-z, A-Z) only, with unit tests",
+            "details": "",
+            "status": "done",
+            "dependencies": [],
+            "parentTaskId": 2
+          },
+          {
+            "id": 3,
+            "title": "Implement count_characters function",
+            "description": "Create count_characters function that counts total characters including spaces, with unit tests",
+            "details": "",
+            "status": "done",
+            "dependencies": [],
+            "parentTaskId": 2
+          },
+          {
+            "id": 4,
+            "title": "Implement count_sentences function",
+            "description": "Create count_sentences function that splits by sentence terminators (. ! ?) with proper handling, with unit tests",
+            "details": "",
+            "status": "done",
+            "dependencies": [],
+            "parentTaskId": 2
+          },
+          {
+            "id": 5,
+            "title": "Implement count_paragraphs function",
+            "description": "Create count_paragraphs function that splits by double line breaks, with unit tests",
+            "details": "",
+            "status": "done",
+            "dependencies": [],
+            "parentTaskId": 2
+          }
+        ]
+      },
+      {
+        "id": 3,
+        "title": "Develop MCP Server and Tools",
+        "description": "Set up the main MCP server entry point and define the five tools using the MCP SDK, linking them to the core analysis logic.",
+        "details": "In `src/index.ts`, initialize the MCP `Server` with `StdioServerTransport`. In `src/tools/wordcount-tools.ts`, define the five tools (`count_words`, `count_letters`, etc.). For each tool, specify the description, define the input schema using Zod (`{ text: z.string() }`), and implement the handler to call the corresponding function from `text-analyzer.ts`.",
+        "testStrategy": "Perform integration testing using the MCP Inspector tool to send requests to each tool and validate the responses. Test with valid and invalid inputs to check schema validation and error handling.",
+        "priority": "high",
+        "dependencies": [
+          2
+        ],
+        "status": "done",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Set up MCP server entry point",
+            "description": "Create src/index.ts with shebang, MCP Server and StdioServerTransport setup",
+            "details": "",
+            "status": "done",
+            "dependencies": [],
+            "parentTaskId": 3
+          },
+          {
+            "id": 2,
+            "title": "Define MCP tools with Zod schemas",
+            "description": "Create src/tools/wordcount-tools.ts with all 5 tools, Zod input schemas, and handlers",
+            "details": "",
+            "status": "done",
+            "dependencies": [],
+            "parentTaskId": 3
+          }
+        ]
+      },
+      {
+        "id": 4,
+        "title": "Finalize Packaging and Documentation",
+        "description": "Prepare the package for npm publication by creating comprehensive documentation and ensuring the build process is correct.",
+        "details": "Create a detailed `README.md` including installation (`npm install -g`), usage (`npx wordcount-mcp`), Claude Desktop configuration example, and API documentation for each tool. Ensure the `files` array in `package.json` is correct. Add a `LICENSE` file (e.g., MIT).",
+        "testStrategy": "Review the generated `README.md` for clarity and accuracy. Perform a dry run of `npm publish` (`npm publish --dry-run`) to check for packaging issues. Install the package locally from the tarball to simulate a user installation.",
+        "priority": "medium",
+        "dependencies": [
+          3
+        ],
+        "status": "done",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Create comprehensive README.md",
+            "description": "Write detailed README with installation, usage, Claude Desktop configuration, and API documentation",
+            "details": "",
+            "status": "done",
+            "dependencies": [],
+            "parentTaskId": 4
+          },
+          {
+            "id": 2,
+            "title": "Create LICENSE file",
+            "description": "Add GPL-3.0 license file to project root",
+            "details": "",
+            "status": "done",
+            "dependencies": [],
+            "parentTaskId": 4
+          },
+          {
+            "id": 3,
+            "title": "Finalize package.json for npm publication",
+            "description": "Complete package.json with proper metadata, files array, and publication configuration",
+            "details": "",
+            "status": "done",
+            "dependencies": [],
+            "parentTaskId": 4
+          }
+        ]
+      },
+      {
+        "id": 5,
+        "title": "Release Preparation and Final Testing",
+        "description": "Conduct final end-to-end testing, performance benchmarking, and prepare for the initial v1.0.0 release on npm.",
+        "details": "Execute the full test suite (`npm test`). Perform performance benchmarks to ensure all operations complete in < 100ms for 10,000-word texts. Follow the npm publishing checklist: run tests, build, update version, and publish to the registry. Create a corresponding Git tag and GitHub release.",
+        "testStrategy": "End-to-end testing by running the server via `npx` and interacting with it using a sample MCP client or script. Final validation against all functional and non-functional requirements in the PRD.",
+        "priority": "medium",
+        "dependencies": [
+          4
+        ],
+        "status": "done",
+        "subtasks": [
+          {
+            "id": 1,
+            "title": "Create performance benchmark script",
+            "description": "Build benchmark script to test performance with large text samples (10,000 words)",
+            "details": "",
+            "status": "done",
+            "dependencies": [],
+            "parentTaskId": 5
+          },
+          {
+            "id": 2,
+            "title": "Conduct end-to-end testing",
+            "description": "Test complete MCP server functionality with real MCP client interactions",
+            "details": "",
+            "status": "done",
+            "dependencies": [],
+            "parentTaskId": 5
+          },
+          {
+            "id": 3,
+            "title": "Prepare for npm publication",
+            "description": "Run final tests, create version tag, and publish to npm registry",
+            "details": "",
+            "status": "done",
+            "dependencies": [],
+            "parentTaskId": 5
+          }
+        ]
+      }
+    ],
+    "metadata": {
+      "created": "2025-07-14T13:04:12.344Z",
+      "updated": "2025-07-15T11:49:46.452Z",
+      "description": "Tasks for master context"
+    }
+  }
+}

@@ -1,0 +1,260 @@
+# Product Requirements Document (PRD)
+## Word Count MCP Server
+
+### 1. Executive Summary
+
+The Word Count MCP Server is a lightweight, npm-published Model Context Protocol server that provides text analysis capabilities to AI assistants. It offers various counting functions (words, letters, characters, sentences, paragraphs) through a standardized interface, enabling AI models to perform text analysis tasks efficiently.
+
+### 2. Product Overview
+
+**Product Name:** wordcount-mcp
+**Type:** MCP Server (Model Context Protocol)
+**Language:** TypeScript
+**Package Manager:** npm
+**Distribution:** npm registry (runnable via npx)
+**Transport:** stdio (Standard Input/Output)
+
+### 3. Objectives
+
+- Provide a simple, reliable text analysis tool for AI assistants
+- Demonstrate best practices for building MCP servers in TypeScript
+- Offer a plug-and-play solution that requires no configuration
+- Support common text analysis operations in a single package
+
+### 4. Technical Architecture
+
+#### 4.1 Core Dependencies
+```json
+{
+  "@modelcontextprotocol/sdk": "^1.15.1",
+  "zod": "^3.x.x"
+}
+```
+
+#### 4.2 Project Structure
+```
+wordcount-mcp/
+├── src/
+│   ├── index.ts          # Main server entry point
+│   ├── tools/
+│   │   └── wordcount-tools.ts  # Tool implementations
+│   └── utils/
+│       └── text-analyzer.ts     # Core text analysis logic
+├── dist/                 # Compiled JavaScript output
+├── package.json
+├── tsconfig.json
+├── README.md
+├── LICENSE
+└── .gitignore
+```
+
+### 5. Functional Requirements
+
+#### 5.1 MCP Tools
+
+The server will expose the following tools:
+
+##### 5.1.1 count_words
+- **Description:** Count the number of words in the provided text
+- **Input Schema:**
+  ```typescript
+  {
+    text: string (required) - The text to analyze
+  }
+  ```
+- **Output:** Number of words
+- **Logic:** Split by whitespace and filter empty strings
+
+##### 5.1.2 count_letters
+- **Description:** Count the number of letters (alphabetic characters) in the text
+- **Input Schema:**
+  ```typescript
+  {
+    text: string (required) - The text to analyze
+  }
+  ```
+- **Output:** Number of alphabetic characters
+- **Logic:** Count only a-z, A-Z characters
+
+##### 5.1.3 count_characters
+- **Description:** Count the total number of characters including spaces
+- **Input Schema:**
+  ```typescript
+  {
+    text: string (required) - The text to analyze
+  }
+  ```
+- **Output:** Total character count
+- **Logic:** Return string length
+
+##### 5.1.4 count_sentences
+- **Description:** Count the number of sentences in the text
+- **Input Schema:**
+  ```typescript
+  {
+    text: string (required) - The text to analyze
+  }
+  ```
+- **Output:** Number of sentences
+- **Logic:** Split by sentence terminators (. ! ?) with proper handling of abbreviations
+
+##### 5.1.5 count_paragraphs
+- **Description:** Count the number of paragraphs in the text
+- **Input Schema:**
+  ```typescript
+  {
+    text: string (required) - The text to analyze
+  }
+  ```
+- **Output:** Number of paragraphs
+- **Logic:** Split by double line breaks or multiple newlines
+
+### 6. Non-Functional Requirements
+
+#### 6.1 Performance
+- All operations should complete in < 100ms for texts up to 10,000 words
+- Memory efficient for large texts (up to 1MB)
+
+#### 6.2 Reliability
+- Graceful error handling for edge cases (empty text, null input)
+- Consistent results across different text encodings
+
+#### 6.3 Usability
+- Zero configuration required
+- Clear error messages
+- Comprehensive documentation with examples
+
+### 7. Implementation Details
+
+#### 7.1 Package Configuration (package.json)
+```json
+{
+  "name": "wordcount-mcp",
+  "version": "1.0.0",
+  "description": "MCP server for text analysis and word counting",
+  "type": "module",
+  "main": "./dist/index.js",
+  "bin": {
+    "wordcount-mcp": "./dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc && chmod +x dist/index.js",
+    "dev": "tsc --watch",
+    "test": "jest",
+    "prepublishOnly": "npm run build"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "keywords": [
+    "mcp",
+    "mcp-server",
+    "wordcount",
+    "text-analysis",
+    "model-context-protocol"
+  ],
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
+```
+
+#### 7.2 TypeScript Configuration (tsconfig.json)
+```json
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "Node16",
+    "moduleResolution": "Node16",
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "declaration": true,
+    "declarationMap": true
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist"]
+}
+```
+
+#### 7.3 Entry Point Structure
+```typescript
+#!/usr/bin/env node
+import { Server } from "@modelcontextprotocol/sdk/server/index.js";
+import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
+```
+
+### 8. User Experience
+
+#### 8.1 Installation & Usage
+```bash
+# Global installation
+npm install -g wordcount-mcp
+
+# Or run directly with npx
+npx wordcount-mcp
+```
+
+#### 8.2 Configuration for Claude Desktop
+```json
+{
+  "mcpServers": {
+    "wordcount": {
+      "command": "npx",
+      "args": ["wordcount-mcp"]
+    }
+  }
+}
+```
+
+### 9. Testing Strategy
+
+- Unit tests for each counting function
+- Edge case testing (empty strings, unicode, special characters)
+- Integration tests with MCP Inspector
+- Performance benchmarking for large texts
+
+### 10. Documentation Requirements
+
+- README with clear installation instructions
+- Example usage in various MCP clients
+- API documentation for each tool
+- Troubleshooting guide
+- Contributing guidelines
+
+### 11. Release & Deployment
+
+#### 11.1 Version Strategy
+- Follow semantic versioning (1.0.0)
+- Publish to npm registry
+- Tag releases in Git
+
+#### 11.2 npm Publishing Checklist
+- [ ] Run tests
+- [ ] Build TypeScript
+- [ ] Update version
+- [ ] Update changelog
+- [ ] Publish with `npm publish`
+- [ ] Create GitHub release
+
+### 12. Future Enhancements (v2.0)
+
+- Additional analysis tools (readability scores, language detection)
+- Batch processing for multiple texts
+- Performance optimization for very large texts
+- Support for different languages and character sets
+- Export results in various formats (JSON, CSV)
+
+### 13. Security Considerations
+
+- No external API calls
+- No file system access beyond stdio
+- Input validation to prevent injection attacks
+- Rate limiting considerations for resource protection
+
+This PRD provides a complete blueprint for building a professional-grade word count MCP server that follows TypeScript and npm best practices while maintaining simplicity and ease of use.

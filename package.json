@@ -1,0 +1,64 @@
+{
+  "name": "wordcount-mcp",
+  "version": "1.0.0",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "bin": {
+    "wordcount-mcp": "dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "dev": "nodemon --exec 'node --loader ts-node/esm' src/index.ts",
+    "test": "jest",
+    "bench": "tsc -p tsconfig.bench.json && node dist/bench/benchmark.js",
+    "lint": "eslint . --ext .ts",
+    "format": "prettier --write \"src/**/*.ts\"",
+    "prepublishOnly": "npm run build && npm run test && npm run bench"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/simonfalke-01/wordcount-mcp.git"
+  },
+  "keywords": [
+    "mcp",
+    "text-analysis",
+    "word-count",
+    "claude",
+    "ai-assistant"
+  ],
+  "author": "simonfalke <i@simonfalke.com>",
+  "license": "GPL-3.0",
+  "type": "module",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "bugs": {
+    "url": "https://github.com/simonfalke-01/wordcount-mcp/issues"
+  },
+  "homepage": "https://github.com/simonfalke-01/wordcount-mcp#readme",
+  "description": "A TypeScript-based MCP server for text analysis and word counting",
+  "files": [
+    "dist/**/*",
+    "package.json",
+    "README.md",
+    "LICENSE"
+  ],
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.15.1",
+    "zod": "^3.25.76"
+  },
+  "devDependencies": {
+    "@types/jest": "^30.0.0",
+    "@types/node": "^24.0.13",
+    "@typescript-eslint/eslint-plugin": "^8.36.0",
+    "@typescript-eslint/parser": "^8.36.0",
+    "eslint": "^9.31.0",
+    "jest": "^30.0.4",
+    "nodemon": "^3.1.10",
+    "prettier": "^3.6.2",
+    "ts-jest": "^29.4.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.3"
+  }
+}

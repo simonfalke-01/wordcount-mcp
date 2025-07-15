@@ -1,0 +1,25 @@
+# Task ID: 1
+# Title: Project Setup and Scaffolding
+# Status: pending
+# Dependencies: None
+# Priority: high
+# Description: Initialize the npm project, create the directory structure, and configure `package.json`, `tsconfig.json`, and `.gitignore` as per the PRD.
+# Details:
+Set up the project with `npm init`. Create `src/`, `src/tools/`, `src/utils/`, and `dist/` directories. Populate `package.json` with dependencies (`@modelcontextprotocol/sdk`, `zod`), scripts (`build`, `dev`, `test`), and metadata. Configure `tsconfig.json` for ES2022 target and Node16 module resolution.
+
+# Test Strategy:
+Verify that `npm install` and `npm run build` execute without errors. Check that the `dist` directory is created with the correct structure.
+
+# Subtasks:
+## 1. Initialize npm project and create directory structure [pending]
+### Dependencies: None
+### Description: Run npm init to create package.json, create src/, src/tools/, src/utils/ directories, and set up basic project structure
+### Details:
+
+
+## 2. Configure TypeScript and build system [pending]
+### Dependencies: None
+### Description: Create tsconfig.json, configure package.json scripts for build/dev/test, and set up .gitignore file
+### Details:
+
+
